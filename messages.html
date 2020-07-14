@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="assets/css/Navigation-with-Search.css">
     <link rel="stylesheet" href="assets/css/Search-Field-With-Icon.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
+    
 </head>
 
 <body>
@@ -34,11 +35,11 @@
                 </form><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navcol-1" style="width: 563px;margin-right: 0px;">
                     <ul class="nav navbar-nav ml-auto">
-                        <li class="nav-item" role="presentation"><a class="nav-link active text-left" href="#" style="font-size: 20px;">Pagina Principal</a></li>
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="#" style="font-size: 20px;">Mensagens</a></li>
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="#" style="font-size: 20px;">Notificações</a></li>
-                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#" style="font-size: 20px;">Utilizador</a>
-                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">First Item</a><a class="dropdown-item" role="presentation" href="#">Second Item</a><a class="dropdown-item" role="presentation" href="#">Third Item</a></div>
+                        <li class="nav-item" role="presentation"><a class="nav-link active text-left" href="homepage.html" style="font-size: 20px;">Pagina Principal</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="messages.html" style="font-size: 20px;">Mensagens</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="Notificacoes.html" style="font-size: 20px;">Notificações</a></li>
+                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="" style="font-size: 20px;">Utilizador</a>
+                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">Profile</a><a class="dropdown-item" role="presentation" href="Logout.html">logout</a></div>
                         </li>
                     </ul>
                 </div>
@@ -52,20 +53,18 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-xl-3" style="color: rgb(0,0,0);">
-                    <ul class="list-group" id="users">
-                        
+                   <ul class="list-group" id="users">
                     </ul>
                 </div>
                 <div class="col-md-6 col-xl-9" style="position: relative;">
                     <ul class="list-group">
-                        <li class="list-group-item" id="m" style="overflow: auto;height: 500px;width: 100%;margin-bottom: 55px;position: relative;margin-bottom: initial;border-radius: 12px;"><span>List Group Item 1</span>
-                          
+                        <li class="list-group-item" id="m" style="overflow: auto;height: 500px;width: 100%;margin-bottom: 55px;position: relative;margin-bottom: initial;border-radius: 12px;">
                         </li>
                     </ul>
                     <div class="row">
                         <div class="col">
-                            <textarea id="messagecontent" spellcheck="true" ></textarea>
-                            <button class="btn btn-primary text-monospace" type="button" id="sendmessage" style="width: 10%;/*padding-top: 0px;*//*margin-bottom: 4.5%;*/font-size: 14px;">Send</button></div>
+                            <textarea spellcheck="true" id="messagecontent"></textarea>
+                            <button class="btn btn-primary text-monospace" id='sendmessage' type="button" style="width: 10%;/*padding-top: 0px;*//*margin-bottom: 4.5%;*/font-size: 14px; position: absolute;">Send</button></div>
                     </div>
                 </div>
             </div>
@@ -73,9 +72,9 @@
     </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-     <script type="text/javascript">
-         SENDER = window.location.hash.split('#')[1];
-        USERNAME = "";
+    <script type="text/javascript">
+    SENDER = window.location.hash.split('#')[1];
+    USERNAME = "";
     function getUsername() {
             $.ajax({
 
@@ -89,11 +88,14 @@
                     }
             })
     }
-        $(document).ready(function() {
-             $(window).on('hashchange', function() {
+
+    $(document).ready(function() {
+
+            $(window).on('hashchange', function() {
                     location.reload()
             })
-             $('#sendmessage').click(function() {
+
+            $('#sendmessage').click(function() {
                     $.ajax({
 
                             type: "POST",
@@ -102,14 +104,15 @@
                             contentType: "application/json",
                             data: '{ "body": "'+ $("#messagecontent").val() +'", "receiver": "'+ SENDER +'" }',
                             success: function(r) {
-                                   location.reload()
+                                    location.reload()
                             },
                             error: function(r) {
 
                             }
                     })
             })
-              $.ajax({
+
+            $.ajax({
 
                     type: "GET",
                     url: "restapi/musers",
@@ -126,45 +129,41 @@
                             }
                     }
             })
-                $.ajax({
 
-                        type: "GET",
-                        url: "restapi/messages?sender="+SENDER,
-                        processData: false,
-                        contentType: "application/json",
-                        data: '',
-                        success: function(r) 
-                        {
-                             r = JSON.parse(r)
+            $.ajax({
+
+                    type: "GET",
+                    url: "restapi/messages?sender="+SENDER,
+                    processData: false,
+                    contentType: "application/json",
+                    data: '',
+                    success: function(r) {
+                            r = JSON.parse(r)
                             $.ajax({
 
-                                type: "GET",
-                                url: "restapi/users",
-                                processData: false,
-                                contentType: "application/json",
-                                data: '',
-                                success: function(u) {
-                                    USERNAME = u;
-                                    for (var i = 0; i < r.length; i++) {
-                                         if (r[i].Sender == USERNAME) {
-                                                            $('#m').append('<div><p                                class="text-break text-capitalize" style="position: relative;color: rgb(0,0,0);left: 50%;width: 50%;border-radius: 10px;background-color: #e8e8e8;padding: 10px;">'+r[i].body+'</p></div>')
+                                    type: "GET",
+                                    url: "restapi/users",
+                                    processData: false,
+                                    contentType: "application/json",
+                                    data: '',
+                                    success: function(u) {
+                                            USERNAME = u;
+                                            for (var i = 0; i < r.length; i++) {
+                                                    if (r[i].Sender == USERNAME) {
+                                                            $('#m').append('<p                                class="text-break text-capitalize" style="position: relative;color: rgb(0,0,0);left: 50%;width: 50%;border-radius: 10px;background-color: #e8e8e8;padding: 10px;">'+r[i].body+'</p>')
+                                                    } else {
+                                                            $('#m').append('<p class="text-break text-capitalize" style="background-color: #d2f4dc;width: 60%;border-radius: 10px;color: rgb(0,0,0);padding: 1%;overflow: hidden;">'+r[i].body+'</p>')
                                                     }
-                                        else
-                                        {
-                                                $('#m').append('<div> <p class="text-break text-capitalize" style="background-color: #d2f4dc;width: 60%;border-radius: 10px;color: rgb(0,0,0);padding: 1%;overflow: hidden;">'+r[i].body+'</p>          </div>')
-                                        }
+                                            }
                                     }
-                                }
                             })
-                         },
-                        error: function(r)
-                        {
+                    },
+                    error: function(r) {
                             console.log(r)
-                        }
-                    })
-            })
-
-</script>
+                    }
+             })
+    })
+    </script>
 </body>
 
 </html>

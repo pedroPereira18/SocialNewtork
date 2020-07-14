@@ -10,56 +10,56 @@ $isFollowing = False;
 $followerid =Login::isLoggedIn();
 if(isset($_GET['u']))
 {
-	if (DB::query('SELECT username from users where username =:username', array(':username'=>$_GET['u']))) 
-	{
-			$username = DB::query('SELECT username from users where username =:username', array(':username'=>$_GET['u']))[0]['username'];
-			$userid = DB::query('SELECT id from users where username=:username', array(':username'=>$_GET['u']))[0]['id'];
-				
-			
-			if(isset($_POST['Seguir']))
-			{
-				if ($userid != $followerid) 
-					{							
-			
-				if (!DB::query('SELECT follower_id FROM seguidores WHERE user_id=:userid AND follower_id=:followerid',array(':userid' =>$userid,':followerid'=>$followerid))) 
-				{
-						DB_update::query_update('INSERT INTO seguidores VALUES (\'\', :userid, :followerid)',array(':userid' =>$userid,':followerid'=>$followerid));
-				}
-				
-			 }
+    if (DB::query('SELECT username from users where username =:username', array(':username'=>$_GET['u']))) 
+    {
+            $username = DB::query('SELECT username from users where username =:username', array(':username'=>$_GET['u']))[0]['username'];
+            $userid = DB::query('SELECT id from users where username=:username', array(':username'=>$_GET['u']))[0]['id'];
+                
+            
+            if(isset($_POST['Seguir']))
+            {
+                if ($userid != $followerid) 
+                    {                           
+            
+                if (!DB::query('SELECT follower_id FROM seguidores WHERE user_id=:userid AND follower_id=:followerid',array(':userid' =>$userid,':followerid'=>$followerid))) 
+                {
+                        DB_update::query_update('INSERT INTO seguidores VALUES (\'\', :userid, :followerid)',array(':userid' =>$userid,':followerid'=>$followerid));
+                }
+                
+             }
 
-			}
-			$isFollowing = True;
-			if(isset($_POST['unfollow']))
-			{
-				if ($userid != $followerid) 
-					{
-				if (DB::query('SELECT follower_id FROM seguidores WHERE user_id=:userid AND follower_id=:followerid',array(':userid' =>$userid,':followerid'=>$followerid))) 
-				{
-						DB_update::query_update('DELETE FROM seguidores WHERE user_id=:userid AND follower_id=:followerid  ',array(':userid' =>$userid,':followerid'=>$followerid));
-				}
-				
-			   }
-			}
+            }
+            $isFollowing = True;
+            if(isset($_POST['unfollow']))
+            {
+                if ($userid != $followerid) 
+                    {
+                if (DB::query('SELECT follower_id FROM seguidores WHERE user_id=:userid AND follower_id=:followerid',array(':userid' =>$userid,':followerid'=>$followerid))) 
+                {
+                        DB_update::query_update('DELETE FROM seguidores WHERE user_id=:userid AND follower_id=:followerid  ',array(':userid' =>$userid,':followerid'=>$followerid));
+                }
+                
+               }
+            }
             $isFollowing = False;
-			if (DB::query('SELECT follower_id FROM seguidores WHERE user_id=:userid AND follower_id=:followerid  ',array(':userid' =>$userid,':followerid'=>$followerid)))
-				{
-						$isFollowing = True;
-				}
+            if (DB::query('SELECT follower_id FROM seguidores WHERE user_id=:userid AND follower_id=:followerid  ',array(':userid' =>$userid,':followerid'=>$followerid)))
+                {
+                        $isFollowing = True;
+                }
 
 
-				if(isset($_POST['deletepost']))
-				{
-					if(DB::query('SELECT id FROM posts WHERE id =:postid AND user_id =:userid', array(':postid'=>$_GET['postid'],':userid'=>$followerid)))
-					{
-						DB_update::query_update('DELETE FROM posts WHERE id =:postid AND user_id =:userid',array(':postid'=>$_GET['postid'],':userid'=>$followerid));
-						DB_update::query_update('DELETE FROM post_likes WHERE post_id =:postid',array(':postid'=>$_GET['postid']));
-					}
-				}
+                if(isset($_POST['deletepost']))
+                {
+                    if(DB::query('SELECT id FROM posts WHERE id =:postid AND user_id =:userid', array(':postid'=>$_GET['postid'],':userid'=>$followerid)))
+                    {
+                        DB_update::query_update('DELETE FROM posts WHERE id =:postid AND user_id =:userid',array(':postid'=>$_GET['postid'],':userid'=>$followerid));
+                        DB_update::query_update('DELETE FROM post_likes WHERE post_id =:postid',array(':postid'=>$_GET['postid']));
+                    }
+                }
 
 
 
-				if (isset($_POST['post'])) {
+                if (isset($_POST['post'])) {
                         if ($_FILES['postimg']['size'] == 0) {
                                 Post::createPost($_POST['postbody'], Login::isLoggedIn(), $userid);
                         } else {
@@ -78,7 +78,7 @@ if(isset($_GET['u']))
         } else {
                 die('User not found!');
         }
-		
+        
 }
 
 ?>
@@ -98,10 +98,11 @@ if(isset($_GET['u']))
     </style>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Profile</title>
+    <title>Untitled</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alegreya">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/simple-line-icons.min.css">
     <link rel="stylesheet" href="assets/fonts/typicons.min.css">
     <link rel="stylesheet" href="assets/css/Footer-Dark.css">
@@ -122,18 +123,18 @@ if(isset($_GET['u']))
             <div class="container-fluid"><a class="navbar-brand" href="#" style="background-image: url(&quot;assets/img/índice.png&quot;);"></a>
                 <form class="form-inline">
                     <div><input class="form-control sbox" type="text" placeholder="Procurar" style="width: 150%;">
-                        <ul class="list-group autocomplete"  style="position: absolute;z-index: 100;">
+                        <ul class="list-group autocomplete" style="position: absolute;z-index: 100;">
                             
                         </ul>
                     </div>
                 </form><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navcol-1" style="width: 563px;margin-right: 0px;">
                     <ul class="nav navbar-nav ml-auto">
-                        <li class="nav-item" role="presentation"><a class="nav-link active text-left" href="#" style="font-size: 20px;">Pagina Principal</a></li>
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="#" style="font-size: 20px;">Mensagens</a></li>
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="#" style="font-size: 20px;">Notificações</a></li>
-                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#" style="font-size: 20px;">Utilizador</a>
-                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">First Item</a><a class="dropdown-item" role="presentation" href="#">Second Item</a><a class="dropdown-item" role="presentation" href="#">Third Item</a></div>
+                        <li class="nav-item" role="presentation"><a class="nav-link active text-left" href="homepage.html" style="font-size: 20px;">Pagina Principal</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="messages.html" style="font-size: 20px;">Mensagens</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="Notificacoes.html" style="font-size: 20px;">Notificações</a></li>
+                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="" style="font-size: 20px;">Utilizador</a>
+                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">Profile</a><a class="dropdown-item" role="presentation" href="Logout.html">logout</a></div>
                         </li>
                     </ul>
                 </div>
@@ -142,8 +143,6 @@ if(isset($_GET['u']))
     </header><br>
     <div class="container">
         <h1 style="color: rgb(0,0,0);"><?php echo $username; ?> Profile</h1>
-                
-        <
     </div>
     <div>
         <div class="container">
@@ -152,37 +151,25 @@ if(isset($_GET['u']))
                     <ul class="list-group">
                         <li class="list-group-item">
                             <p class="text-break" style="color: rgb(0,0,0);"><strong>About Me </strong>dsfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsdfsdfsd<br></p>
-                            
                         </li>
                     </ul>
-                    <form action="profile.php?u=<?php echo $username; ?>" method="post">
-        <?php
-        if ($userid != $followerid) {
-                if ($isFollowing ) {
-                        echo '<input type="submit" name="unfollow" value="unfollow">';
-                } else {
-                        echo '<input type="submit" name="Seguir" value="Seguir">';
-                }
-        }
-        ?>
-                 </form>
                 </div>
                 <div class="col-xl-6" style="border-color: #000000;background-color: rgba(0,0,0,0);color: rgb(0,0,0);">
                     <ul class="list-group">
-                        <div class="timelineposts">
-                            
-                             
-                    </ul>
+                      <div class="timelineposts">
                         
+                    </ul>
                 </div>
+               
+
                 <div class="col-md-6 col-xl-4"><button class="btn btn-primary" type="button" style="background-color: rgb(7,215,65);" onclick="showNewPostModal()">New Post</button>
 
                 </div>
-
             </div>
         </div>
 
     </div>
+    
     <div class="modal fade" id="commentsmodal" role="dialog" tabindex="-1" style="color: rgb(0,0,0); padding: 200px">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -203,18 +190,19 @@ if(isset($_GET['u']))
                             <h4 class="modal-title">New Post</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
                         <div style="max-height: 400px ;overflow-y: auto">
                             <form action="profile.php?u=<?php echo $username; ?>" method="post" enctype="multipart/form-data">
-                                <textarea name="postbody" rows="5" cols="64"></textarea>
+                                <textarea name="postbody" rows="5" cols="64" style="width: 100%;"></textarea>
                                 <br />Upload an image:
                                 <input type="file" name="postimg">
                         </div>
                         <div class="modal-footer">
                                                 <input type="submit" name="post" value="Post" class="btn btn-default" type="button" style="background-image:url(&quot;none&quot;);background-color:#2bda05;color:#fff;padding:16px 32px;margin:0px 0px 6px;border:none;box-shadow:none;text-shadow:none;opacity:0.9;text-transform:uppercase;font-weight:bold;font-size:13px;letter-spacing:0.4px;line-height:1;outline:none;">
+                                                
                             <button class="btn btn-light" type="button" data-dismiss="modal">Fechar</button></div>
                     </div>
                 </div>
             </div>
             <div class="footer-dark" style="position: relative;">
-        <footer>
+        <footer >
             <div class="container">
                 <p class="copyright">Social Media© 2020</p>
             </div>
@@ -231,6 +219,7 @@ if(isset($_GET['u']))
             if ($(this).scrollTop() + 1 >= $('body').height() - $(window).height()) {
                     if (working == false) {
                             working = true;
+                             
                             $.ajax({
 
                                     type: "GET",
@@ -250,7 +239,7 @@ if(isset($_GET['u']))
                                         $('.timelineposts').html(
                                                 $('.timelineposts').html() +
 
-                                                ' <li class="list-group-item" id="'+posts[index].PostId+'" style="border-color: #cbcbcb;"><blockquote class="blockquote"><p class="mb-0" style="color: rgb(0,0,0);">'+posts[index].PostBody+'</p><footer class="blockquote-footer">Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'</footer></blockquote><button class="btn btn-primary" type="button" data-id="'+posts[index].PostId+'" style="background-color: rgba(0,0,0,0);color: rgb(0,0,0);width: 142px;font-family: Alegreya, serif;">&nbsp;<i class="icon-fire" data-bs-hover-animate="rubberBand" style="color: rgb(36,0,255);"></i>&nbsp;'+posts[index].Likes+' Likes</button><button      class="btn btn-primary" type="button" data-postid="'+posts[index].PostId+'" style="background-color: rgba(0,0,0,0);color: rgb(0,0,0);width: 142px;font-family: Alegreya, serif;" onclick="showCommentsModal()">&nbsp;<i class="typcn typcn-pencil" data-bs-hover-animate="rubberBand" style="color: rgb(255,0,0);"></i>&nbsp;Comentários</button>  </li>   '
+                                                ' <li class="list-group-item" id="'+posts[index].PostId+'" style="border-color: #cbcbcb;"><blockquote class="blockquote"><p class="mb-0" style="color: rgb(0,0,0);">'+posts[index].PostBody+'</p><footer class="blockquote-footer">Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'</footer></blockquote><button class="btn btn-primary " type="button" name="delete" id="'+posts[index].PostId+'" style="position: absolute;right: 0;top: 0;width: 0px;color: rgba(220,220,220,0.26);background-color: rgba(227,225,225,0.07);height: 23px;"><i class="fa fa-remove" style="position: absolute; width:100% ;right: 0;top: 0;color: rgb(255,0,0);"></i></button><button class="btn btn-primary" type="button" data-id="'+posts[index].PostId+'" style="background-color: rgba(0,0,0,0);color: rgb(0,0,0);width: 142px;font-family: Alegreya, serif;">&nbsp;<i class="icon-fire" data-bs-hover-animate="rubberBand" style="color: rgb(36,0,255);"></i>&nbsp;'+posts[index].Likes+' Likes</button><button      class="btn btn-primary" type="button" data-postid="'+posts[index].PostId+'" style="background-color: rgba(0,0,0,0);color: rgb(0,0,0);width: 142px;font-family: Alegreya, serif;" onclick="showCommentsModal()">&nbsp;<i class="typcn typcn-pencil" data-bs-hover-animate="rubberBand" style="color: rgb(255,0,0);"></i>&nbsp;Comentários</button>  </li>   '
                                               
                                         )
                                          }
@@ -259,11 +248,13 @@ if(isset($_GET['u']))
                                             $('.timelineposts').html(
                                                 $('.timelineposts').html() +
 
-                                                ' <li class="list-group-item" id="'+posts[index].PostId+'" style="border-color: #cbcbcb;"><blockquote class="blockquote"><p class="mb-0" style="color: rgb(0,0,0);">'+posts[index].PostBody+'</p><img src="" data-tempsrc="'+posts[index].PostImage+'" class="postimg" id ="img'+posts[index].PostId+'"><footer class="blockquote-footer">Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'</footer></blockquote><button class="btn btn-primary" type="button" data-id="'+posts[index].PostId+'" style="background-color: rgba(0,0,0,0);color: rgb(0,0,0);width: 142px;font-family: Alegreya, serif;">&nbsp;<i class="icon-fire" data-bs-hover-animate="rubberBand" style="color: rgb(36,0,255);"></i>&nbsp;'+posts[index].Likes+' Likes</button><button      class="btn btn-primary" type="button" data-postid="'+posts[index].PostId+'" style="background-color: rgba(0,0,0,0);color: rgb(0,0,0);width: 142px;font-family: Alegreya, serif;" onclick="showCommentsModal()">&nbsp;<i class="typcn typcn-pencil" data-bs-hover-animate="rubberBand" style="color: rgb(255,0,0);"></i>&nbsp;Comentários</button>  </li>   '
+                                                ' <li class="list-group-item" id="'+posts[index].PostId+'" style="border-color: #cbcbcb;"><blockquote class="blockquote"><p class="mb-0" style="color: rgb(0,0,0);">'+posts[index].PostBody+'</p><img src="" data-tempsrc="'+posts[index].PostImage+'" class="postimg" id ="img'+posts[index].PostId+'"><footer class="blockquote-footer">Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'</footer></blockquote><button class="btn btn-primary delete" type="button" name="delete" id="'+posts[index].PostId+'"  style="position: absolute;right: 0;top: 0;width: 0px;color: rgba(220,220,220,0.26);background-color: rgba(227,225,225,0.07);height: 23px;"><i class="fa fa-remove" style="position: absolute; width:100% ;right: 0;top: 0;color: rgb(255,0,0);"></i></button><button class="btn btn-primary" type="button" data-id="'+posts[index].PostId+'" style="background-color: rgba(0,0,0,0);color: rgb(0,0,0);width: 142px;font-family: Alegreya, serif;">&nbsp;<i class="icon-fire" data-bs-hover-animate="rubberBand" style="color: rgb(36,0,255);"></i>&nbsp;'+posts[index].Likes+' Likes</button><button      class="btn btn-primary" type="button" data-postid="'+posts[index].PostId+'" style="background-color: rgba(0,0,0,0);color: rgb(0,0,0);width: 142px;font-family: Alegreya, serif;" onclick="showCommentsModal()">&nbsp;<i class="typcn typcn-pencil" data-bs-hover-animate="rubberBand" style="color: rgb(255,0,0);"></i>&nbsp;Comentários</button>  </li>   '
                                               
                                         )
                                          }
-                                        
+                                          
+                                         
+                                         
                                         $('[data-postid]').click(function() {
                                                 var buttonid = $(this).attr('data-postid');
 
@@ -293,7 +284,7 @@ if(isset($_GET['u']))
                                                 $.ajax({
 
                                                         type: "POST",
-                                                        url: "restapi/Likes?id=" + $(this).attr('data-id'),
+                                                        url: "restapi/likes?id=" + $(this).attr('data-id'),
                                                         processData: false,
                                                         contentType: "application/json",
                                                         data: '',
@@ -334,7 +325,7 @@ if(isset($_GET['u']))
             }
     })
         function scrollToAnchor(aid){
-    var aTag = $(aid);
+        var aTag = $(aid);
         $('html,body').animate({scrollTop: aTag.offset().top},'slow');
     }
 
@@ -382,7 +373,7 @@ if(isset($_GET['u']))
                                         $('.timelineposts').html(
                                                 $('.timelineposts').html() +
 
-                                                ' <li class="list-group-item" id="'+posts[index].PostId+'" style="border-color: #cbcbcb;"><blockquote class="blockquote"><p class="mb-0" style="color: rgb(0,0,0);">'+posts[index].PostBody+'</p><footer class="blockquote-footer">Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'</footer></blockquote><button class="btn btn-primary" type="button" data-id="'+posts[index].PostId+'" style="background-color: rgba(0,0,0,0);color: rgb(0,0,0);width: 142px;font-family: Alegreya, serif;">&nbsp;<i class="icon-fire" data-bs-hover-animate="rubberBand" style="color: rgb(36,0,255);"></i>&nbsp;'+posts[index].Likes+' Likes</button><button      class="btn btn-primary" type="button" data-postid="'+posts[index].PostId+'" style="background-color: rgba(0,0,0,0);color: rgb(0,0,0);width: 142px;font-family: Alegreya, serif;" onclick="showCommentsModal()">&nbsp;<i class="typcn typcn-pencil" data-bs-hover-animate="rubberBand" style="color: rgb(255,0,0);"></i>&nbsp;Comentários</button>  </li> </ul>  '
+                                                ' <li class="list-group-item" id="'+posts[index].PostId+'" style="border-color: #cbcbcb;"><blockquote class="blockquote"><p class="mb-0" style="color: rgb(0,0,0);">'+posts[index].PostBody+'</p><footer class="blockquote-footer">Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'</footer></blockquote><button class="btn btn-primary delete" type="button" name="delete" id="'+posts[index].PostId+'"  style="position: absolute;right: 0;top: 0;width: 0px;color: rgba(220,220,220,0.26);background-color: rgba(227,225,225,0.07);height: 23px;"><i class="fa fa-remove" style="position: absolute; width:100% ;right: 0;top: 0;color: rgb(255,0,0);"></i></button><button class="btn btn-primary" type="button" data-id="'+posts[index].PostId+'" style="background-color: rgba(0,0,0,0);color: rgb(0,0,0);width: 142px;font-family: Alegreya, serif;">&nbsp;<i class="icon-fire" data-bs-hover-animate="rubberBand" style="color: rgb(36,0,255);"></i>&nbsp;'+posts[index].Likes+' Likes</button><button      class="btn btn-primary" type="button" data-postid="'+posts[index].PostId+'" style="background-color: rgba(0,0,0,0);color: rgb(0,0,0);width: 142px;font-family: Alegreya, serif;" onclick="showCommentsModal()">&nbsp;<i class="typcn typcn-pencil" data-bs-hover-animate="rubberBand" style="color: rgb(255,0,0);"></i>&nbsp;Comentários</button>  </li> </ul>  '
                                               
                                         )
                                          }
@@ -391,10 +382,11 @@ if(isset($_GET['u']))
                                             $('.timelineposts').html(
                                                 $('.timelineposts').html() +
 
-                                                ' <li class="list-group-item" id="'+posts[index].PostId+'" style="border-color: #cbcbcb;"><blockquote class="blockquote"><p class="mb-0" style="color: rgb(0,0,0);">'+posts[index].PostBody+'</p><img src="" data-tempsrc="'+posts[index].PostImage+'" class="postimg" id ="img'+posts[index].PostId+'"><footer class="blockquote-footer">Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'</footer></blockquote><button class="btn btn-primary" type="button" data-id="'+posts[index].PostId+'" style="background-color: rgba(0,0,0,0);color: rgb(0,0,0);width: 142px;font-family: Alegreya, serif;">&nbsp;<i class="icon-fire" data-bs-hover-animate="rubberBand" style="color: rgb(36,0,255);"></i>&nbsp;'+posts[index].Likes+' Likes</button><button      class="btn btn-primary" type="button" data-postid="'+posts[index].PostId+'" style="background-color: rgba(0,0,0,0);color: rgb(0,0,0);width: 142px;font-family: Alegreya, serif;" onclick="showCommentsModal()">&nbsp;<i class="typcn typcn-pencil" data-bs-hover-animate="rubberBand" style="color: rgb(255,0,0);"></i>&nbsp;Comentários</button>  </li> </ul>  '
+                                                ' <li class="list-group-item" id="'+posts[index].PostId+'" style="border-color: #cbcbcb;"><blockquote class="blockquote"><p class="mb-0" style="color: rgb(0,0,0);">'+posts[index].PostBody+'</p><img src="" data-tempsrc="'+posts[index].PostImage+'" class="postimg" id ="img'+posts[index].PostId+'"><footer class="blockquote-footer">Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'</footer></blockquote><button class="btn btn-primary delete" type="button" name="delete" id="'+posts[index].PostId+'" style="position: absolute;right: 0;top: 0;width: 0px;color: rgba(220,220,220,0.26);background-color: rgba(227,225,225,0.07);height: 23px;"><i class="fa fa-remove" style="position: absolute; width:100% ;right: 0;top: 0;color: rgb(255,0,0);"></i></button><button class="btn btn-primary" type="button" data-id="'+posts[index].PostId+'" style="background-color: rgba(0,0,0,0);color: rgb(0,0,0);width: 142px;font-family: Alegreya, serif;">&nbsp;<i class="icon-fire" data-bs-hover-animate="rubberBand" style="color: rgb(36,0,255);"></i>&nbsp;'+posts[index].Likes+' Likes</button><button      class="btn btn-primary" type="button" data-postid="'+posts[index].PostId+'" style="background-color: rgba(0,0,0,0);color: rgb(0,0,0);width: 142px;font-family: Alegreya, serif;" onclick="showCommentsModal()">&nbsp;<i class="typcn typcn-pencil" data-bs-hover-animate="rubberBand" style="color: rgb(255,0,0);"></i>&nbsp;Comentários</button>  </li> </ul>  '
                                               
                                         )
                                          }
+                                         
                                         
                                         $('[data-postid]').click(function() {
                                                 var buttonid = $(this).attr('data-postid');
@@ -462,7 +454,23 @@ if(isset($_GET['u']))
   function showNewPostModal()
   {
     $('#newpost').modal('show')
+
   }
+  $(document).on('click', '.delete', function(){
+     var id = $(this).attr('id');
+                                
+$.ajax({
+url:"restapi/DeletePost?id=" + $(this).attr('id'),
+method:"DELETE",
+data:{id:id},
+ success:function(data)
+{
+    window.location = 'profile.php?u=<?php echo $username ?>'
+    console.log(data)
+   }
+  })
+                                         
+  });
 
   function showCommentsModal(res) {
                 $('#commentsmodal').modal('show')
@@ -476,6 +484,7 @@ if(isset($_GET['u']))
 
                 $('.modal-body').html(output)
         }
+    
     </script>
 </body>
 
